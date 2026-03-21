@@ -1,40 +1,23 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react';
-import { Trip, Expense, Member, Category, SplitType, SettlementStep, WalletTransaction } from '../types';
+import { Trip, Expense, Member, SettlementStep, WalletTransaction } from '../types';
+import { MOCK_MEMBERS, MOCK_TRIPS, MOCK_EXPENSES, MOCK_WALLET_TRANSACTIONS } from '../data/mockData';
 
-// 初始模拟数据
-const INITIAL_MEMBERS: Member[] = [
-  { id: 'm1', name: '小明', avatar: 'https://picsum.photos/seed/m1/100' },
-  { id: 'm2', name: '小红', avatar: 'https://picsum.photos/seed/m2/100' },
-  { id: 'm3', name: '小刚', avatar: 'https://picsum.photos/seed/m3/100' },
-  { id: 'm4', name: '小美', avatar: 'https://picsum.photos/seed/m4/100' },
-];
-
-const INITIAL_TRIP: Trip = {
-  id: 't1',
-  name: '云南七日游',
-  location: '云南·大理',
-  startDate: '2024-10-01',
-  members: INITIAL_MEMBERS,
-  budget: 5000,
-  image: 'https://picsum.photos/seed/yunnan/800/400',
-  status: 'ongoing',
-};
+// 使用 Mock 数据作为初始数据
+const INITIAL_MEMBERS: Member[] = MOCK_MEMBERS;
+const INITIAL_TRIP: Trip = MOCK_TRIPS[0];
 
 // --- ViewModel ---
 export const useTripViewModel = () => {
-  // 1. State (数据持久化加载)
+  // 1. State (优先从 LocalStorage 加载，否则使用 Mock 数据)
   const [expenses, setExpenses] = useState<Expense[]>(() => {
     const saved = localStorage.getItem('ts_expenses');
-    return saved ? JSON.parse(saved) : [];
+    return saved ? JSON.parse(saved) : MOCK_EXPENSES;
   });
 
   const [walletTransactions, setWalletTransactions] = useState<WalletTransaction[]>(() => {
     const saved = localStorage.getItem('ts_wallet');
-    return saved ? JSON.parse(saved) : [
-      { id: 'w1', amount: 500, type: 'deposit', title: '全员预交公款', date: '2024-10-01', memberId: 'm1' },
-      { id: 'w2', amount: 500, type: 'deposit', title: '全员预交公款', date: '2024-10-01', memberId: 'm2' },
-    ];
+    return saved ? JSON.parse(saved) : MOCK_WALLET_TRANSACTIONS;
   });
 
   const [currentTrip] = useState<Trip>(INITIAL_TRIP);
