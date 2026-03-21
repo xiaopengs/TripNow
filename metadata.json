@@ -1,0 +1,8 @@
+{
+  "name": "TripSplit - Travel Expense Manager",
+  "description": "A sophisticated travel expense manager and bill splitter with AI-powered voice and OCR features for seamless group travel finances.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
