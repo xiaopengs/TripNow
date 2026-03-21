@@ -201,6 +201,12 @@ const App: React.FC = () => {
                 setCurrentTab('daily');
               } else if (type === 'inbox') {
                 setIsInboxOpen(true);
+              } else if (type === 'manual') {
+                handleManualAction();
+              } else if (type === 'ocr') {
+                handleCameraAction();
+              } else if (type === 'voice') {
+                handleVoiceAction();
               }
             }}
           />
