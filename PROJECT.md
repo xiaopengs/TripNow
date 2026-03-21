@@ -255,6 +255,89 @@ data/mockData.ts            # Mock 数据
 
 ---
 
+## 📁 Git 仓库信息
+
+### 仓库地址
+- **GitHub：** https://github.com/xiaopengs/TripNow
+- **本地路径：** `/Users/ray/.openclaw/workspace/project/TripNow`
+- **当前分支：** main
+
+### 认证配置
+- **Token：** 已配置（GitHub PAT）
+- **推送权限：** ✅ 已验证
+
+### 常用命令
+```bash
+# 进入项目目录
+cd /Users/ray/.openclaw/workspace/project/TripNow
+
+# 查看状态
+git status
+
+# 添加并提交
+git add -A
+git commit -m "type: description"
+git push origin main
+
+# 查看日志
+git log --oneline -10
+```
+
+### 提交规范
+```
+feat:     新功能（如：feat: 添加 FAB 菜单）
+fix:      修复（如：fix: 修复 TypeScript 错误）
+docs:     文档（如：docs: 更新 PROJECT.md）
+style:    格式（如：style: 调整缩进）
+refactor: 重构（如：refactor: 优化 ViewModel）
+chore:    构建/工具（如：chore: 更新依赖）
+```
+
+---
+
+## 🧪 测试信息
+
+### 测试方案
+- **文档位置：** `doc/test-plan.md`
+- **用例数量：** 40+ 条
+- **覆盖模块：** FAB、Inbox、记账、首页、流水、结算
+
+### 问题追踪
+- **文档位置：** `doc/bug-tracker.md`
+- **当前状态：**
+  | 状态 | 数量 |
+  |------|------|
+  | 🔴 待修复 | 0 |
+  | 🟡 修复中 | 0 |
+  | 🟢 已修复 | 2 |
+  | ⚪ 已关闭 | 0 |
+
+### 已知问题
+| BUG ID | 描述 | 状态 |
+|--------|------|------|
+| BUG-001 | Dashboard 缺少图标导入 | ✅ 已修复 |
+| BUG-002 | useTripViewModel 缺少类型导入 | ✅ 已修复 |
+
+### 测试执行步骤
+```bash
+# 1. 安装依赖
+npm install
+
+# 2. 配置环境变量
+echo "GEMINI_API_KEY=your_key" > .env
+
+# 3. TypeScript 检查
+npx tsc --noEmit
+
+# 4. 启动开发服务器
+npm run dev
+
+# 5. 访问测试
+http://localhost:3000
+```
+
+---
+
 ## 📞 项目信息
 
 - **仓库：** https://github.com/xiaopengs/TripNow
@@ -264,5 +347,5 @@ data/mockData.ts            # Mock 数据
 
 ---
 
-*文档版本：v1.1*  
-*更新内容：添加 FAB、Inbox、测试方案、Bug 追踪*
+*文档版本：v1.2*  
+*更新内容：添加 Git 仓库信息、测试相关信息*
