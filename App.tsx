@@ -1,47 +1,105 @@
-
-import React, { useState } from 'react';
-import { Home, List, PieChart, DollarSign, Plus, Mic, Loader2 } from 'lucide-react';
+import React, { useState, useCallback } from 'react';
+import { Home, List, PieChart, DollarSign, Loader2, Inbox as InboxIcon } from 'lucide-react';
 import Dashboard from './components/Dashboard';
 import Records from './components/Records';
 import Statistics from './components/Statistics';
 import Settlement from './components/Settlement';
-import TripList from './components/TripList';
 import PublicWalletDetails from './components/PublicWalletDetails';
 import PayableDetails from './components/PayableDetails';
 import DailyConsumptionDetails from './components/DailyConsumptionDetails';
 import AddExpenseModal from './components/AddExpenseModal';
+import FabMenu from './components/FabMenu';
+import Inbox from './components/Inbox';
 import { useTripViewModel } from './hooks/useTripViewModel';
 import { parseExpenseFromImage, parseExpenseFromVoice } from './services/geminiService';
-import { Expense } from './types';
+import { Expense, Category } from './types';
 
-type TabType = 'home' | 'records' | 'stats' | 'settle' | 'trips' | 'wallet' | 'payable' | 'daily';
+type TabType = 'home' | 'records' | 'stats' | 'settle' | 'wallet' | 'payable' | 'daily';
+
+// 待处理账单类型
+interface PendingExpense {
+  id: string;
+  tempId: string;
+  image?: string;
+  parsedData?: {
+    title?: string;
+    amount?: number;
+    category?: Category;
+    location?: string;
+  };
+  status: 'parsing' | 'pending' | 'error';
+  createdAt: number;
+}
 
 const App: React.FC = () => {
   const [currentTab, setCurrentTab] = useState<TabType>('home');
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isInboxOpen, setIsInboxOpen] = useState(false);
   const [modalInitialData, setModalInitialData] = useState<Partial<Expense> | undefined>();
   const [isProcessingAI, setIsProcessingAI] = useState(false);
+  const [pendingItems, setPendingItems] = useState<PendingExpense[]>([]);
 
   // 初始化 ViewModel
   const vm = useTripViewModel();
 
-  const handleOcrAction = () => {
+  // 添加待处理账单
+  const addPendingItem = useCallback((item: Omit<PendingExpense, 'tempId' | 'createdAt'>) => {
+    const newItem: PendingExpense = {
+      ...item,
+      tempId: `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      createdAt: Date.now(),
+    };
+    setPendingItems(prev => [newItem, ...prev]);
+    return newItem.tempId;
+  }, []);
+
+  // 更新待处理账单
+  const updatePendingItem = useCallback((tempId: string, updates: Partial<PendingExpense>) => {
+    setPendingItems(prev => prev.map(item => 
+      item.tempId === tempId ? { ...item, ...updates } : item
+    ));
+  }, []);
+
+  // 删除待处理账单
+  const deletePendingItem = useCallback((tempId: string) => {
+    setPendingItems(prev => prev.filter(item => item.tempId !== tempId));
+  }, []);
+
+  // 处理拍照识别
+  const handleCameraAction = () => {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
     input.onchange = async (e: any) => {
       const file = e.target.files[0];
       if (file) {
-        setIsProcessingAI(true);
         const reader = new FileReader();
         reader.onload = async () => {
-          const base64 = (reader.result as string).split(',')[1];
-          const result = await parseExpenseFromImage(base64);
-          if (result) {
-            setModalInitialData(result);
-            setIsAddModalOpen(true);
+          const imageUrl = reader.result as string;
+          const base64 = imageUrl.split(',')[1];
+          
+          // 添加到待处理列表
+          const tempId = addPendingItem({
+            id: '',
+            image: imageUrl,
+            status: 'parsing',
+          });
+          
+          setIsInboxOpen(true);
+          
+          try {
+            const result = await parseExpenseFromImage(base64);
+            if (result) {
+              updatePendingItem(tempId, {
+                status: 'pending',
+                parsedData: result,
+              });
+            } else {
+              updatePendingItem(tempId, { status: 'error' });
+            }
+          } catch (error) {
+            updatePendingItem(tempId, { status: 'error' });
           }
-          setIsProcessingAI(false);
         };
         reader.readAsDataURL(file);
       }
@@ -49,17 +107,76 @@ const App: React.FC = () => {
     input.click();
   };
 
+  // 处理语音记账
   const handleVoiceAction = async () => {
     setIsProcessingAI(true);
     const mockTranscript = "今天晚上吃菌子火锅花了350块钱";
+    
+    // 添加到待处理列表
+    const tempId = addPendingItem({
+      id: '',
+      status: 'parsing',
+    });
+    
+    setIsInboxOpen(true);
+    
     setTimeout(async () => {
-      const result = await parseExpenseFromVoice(mockTranscript);
-      if (result) {
-        setModalInitialData(result);
-        setIsAddModalOpen(true);
+      try {
+        const result = await parseExpenseFromVoice(mockTranscript);
+        if (result) {
+          updatePendingItem(tempId, {
+            status: 'pending',
+            parsedData: result,
+          });
+        } else {
+          updatePendingItem(tempId, { status: 'error' });
+        }
+      } catch (error) {
+        updatePendingItem(tempId, { status: 'error' });
       }
       setIsProcessingAI(false);
     }, 1500);
+  };
+
+  // 处理手动记账
+  const handleManualAction = () => {
+    setModalInitialData(undefined);
+    setIsAddModalOpen(true);
+  };
+
+  // 确认待处理账单
+  const handleConfirmPending = (tempId: string, data: Partial<Expense>) => {
+    if (data.amount && data.title) {
+      vm.addExpense({
+        title: data.title,
+        amount: data.amount,
+        payerId: vm.currentUserId,
+        date: new Date().toISOString().split('T')[0],
+        time: new Date().toTimeString().split(' ')[0].substring(0, 5),
+        location: data.location || '未知地点',
+        category: data.category || Category.Food,
+        splitType: '均分' as any,
+        participants: vm.currentTrip.members.map(m => m.id),
+      });
+      deletePendingItem(tempId);
+    }
+  };
+
+  // 重试识别
+  const handleRetry = async (tempId: string) => {
+    updatePendingItem(tempId, { status: 'parsing' });
+    // 模拟重试
+    setTimeout(() => {
+      updatePendingItem(tempId, {
+        status: 'pending',
+        parsedData: {
+          title: '重试识别成功',
+          amount: 100,
+          category: Category.Food,
+          location: '测试地点',
+        },
+      });
+    }, 1000);
   };
 
   const renderContent = () => {
@@ -72,15 +189,9 @@ const App: React.FC = () => {
             myPayable={vm.myPayable} 
             walletBalance={vm.walletBalance}
             recentExpenses={vm.expenses}
+            pendingCount={pendingItems.filter(i => i.status === 'pending').length}
             onAction={(type) => {
-              if (type === 'manual') {
-                setModalInitialData(undefined);
-                setIsAddModalOpen(true);
-              } else if (type === 'ocr') {
-                handleOcrAction();
-              } else if (type === 'voice') {
-                handleVoiceAction();
-              } else if (type === 'wallet') {
+              if (type === 'wallet') {
                 setCurrentTab('wallet');
               } else if (type === 'records') {
                 setCurrentTab('records');
@@ -88,6 +199,8 @@ const App: React.FC = () => {
                 setCurrentTab('payable');
               } else if (type === 'daily') {
                 setCurrentTab('daily');
+              } else if (type === 'inbox') {
+                setIsInboxOpen(true);
               }
             }}
           />
@@ -183,7 +296,24 @@ const App: React.FC = () => {
         initialData={modalInitialData}
       />
 
-      <nav className="fixed bottom-0 max-w-md w-full bg-white border-t border-gray-100 flex justify-between items-center px-6 py-4 pb-8 z-30 shadow-[0_-4px_30px_rgba(0,0,0,0.04)]">
+      <Inbox
+        isOpen={isInboxOpen}
+        onClose={() => setIsInboxOpen(false)}
+        pendingItems={pendingItems}
+        onConfirm={handleConfirmPending}
+        onDelete={deletePendingItem}
+        onRetry={handleRetry}
+      />
+
+      {/* FAB 扇形菜单 */}
+      <FabMenu
+        onManual={handleManualAction}
+        onCamera={handleCameraAction}
+        onVoice={handleVoiceAction}
+      />
+
+      {/* 底部导航 */}
+      <nav className="fixed bottom-0 max-w-md w-full bg-white border-t border-gray-100 flex justify-between items-center px-6 py-4 pb-8 z-40 shadow-[0_-4px-30px_rgba(0,0,0,0.04)]">
         <button 
           onClick={() => setCurrentTab('home')}
           className={`flex flex-col items-center space-y-1.5 transition-all duration-300 ${['home', 'wallet', 'payable', 'daily'].includes(currentTab) ? 'text-orange-500 scale-110' : 'text-gray-400 hover:text-gray-600'}`}
@@ -199,18 +329,8 @@ const App: React.FC = () => {
           <span className="text-[10px] font-black uppercase tracking-widest">流水</span>
         </button>
 
-        <div className="relative -mt-16">
-          <div className="absolute inset-0 bg-orange-400 rounded-full blur-xl opacity-20 animate-pulse"></div>
-          <button 
-            onClick={() => {
-              setModalInitialData(undefined);
-              setIsAddModalOpen(true);
-            }}
-            className="relative bg-orange-500 text-white w-16 h-16 rounded-full shadow-[0_12px_24px_rgba(249,115,22,0.4)] flex items-center justify-center active:scale-90 transition-all hover:bg-orange-600 border-4 border-white"
-          >
-            <Plus size={32} strokeWidth={3} />
-          </button>
-        </div>
+        {/* 占位 - FAB 菜单在中间 */}
+        <div className="w-16" />
 
         <button 
           onClick={() => setCurrentTab('stats')}

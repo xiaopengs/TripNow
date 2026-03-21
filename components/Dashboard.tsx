@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { Settings, MapPin, Wallet, Plus, Mic, Camera, TrendingUp } from 'lucide-react';
-import { Trip, Expense, Member } from '../types';
+import { Settings, MapPin, Wallet, Inbox, TrendingUp } from 'lucide-react';
+import { Trip, Expense } from '../types';
 
 interface DashboardProps {
   trip: Trip;
@@ -10,9 +10,10 @@ interface DashboardProps {
   walletBalance: number;
   onAction: (action: string) => void;
   recentExpenses: Expense[];
+  pendingCount?: number;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ trip, totalSpent, myPayable, walletBalance, onAction, recentExpenses }) => {
+const Dashboard: React.FC<DashboardProps> = ({ trip, totalSpent, myPayable, walletBalance, onAction, recentExpenses, pendingCount = 0 }) => {
   const progressPercent = Math.min(Math.round((totalSpent / trip.budget) * 100), 100);
   const today = new Date().toISOString().split('T')[0];
   const todaySpent = recentExpenses
@@ -30,8 +31,22 @@ const Dashboard: React.FC<DashboardProps> = ({ trip, totalSpent, myPayable, wall
           <MapPin size={12} className="text-orange-400" />
           <span>{trip.location}</span>
         </div>
-        <div className="absolute top-12 right-6 p-2 bg-white/10 backdrop-blur-md rounded-full">
-          <Settings size={20} className="text-white" />
+        <div className="absolute top-12 right-6 flex items-center gap-3">
+          {/* Inbox 入口 */}
+          <button 
+            onClick={() => onAction('inbox')}
+            className="relative p-2 bg-white/10 backdrop-blur-md rounded-full hover:bg-white/20 transition-colors"
+          >
+            <Inbox size={20} className="text-white" />
+            {pendingCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">
+                {pendingCount > 9 ? '9+' : pendingCount}
+              </span>
+            )}
+          </button>
+          <button className="p-2 bg-white/10 backdrop-blur-md rounded-full hover:bg-white/20 transition-colors">
+            <Settings size={20} className="text-white" />
+          </button>
         </div>
         
         <h1 className="text-4xl font-black mb-1 drop-shadow-md">{trip.name}</h1>
