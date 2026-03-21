@@ -11,15 +11,71 @@
 |------|------|
 | 🔴 待修复 | 0 |
 | 🟡 修复中 | 0 |
-| 🟢 已修复 | 0 |
+| 🟢 已修复 | 2 |
 | ⚪ 已关闭 | 0 |
-| **总计** | **0** |
+| **总计** | **2** |
 
 ---
 
 ## 🔴 待修复（P0 - 阻塞性问题）
 
-_暂无待修复问题_
+### BUG-001: Dashboard 组件缺少图标导入
+
+**基本信息**
+- 发现日期：2026-03-21
+- 发现人：AI Assistant（静态代码检查）
+- 模块：Dashboard
+- 优先级：P0
+- 状态：已修复
+
+**问题描述**
+Dashboard.tsx 中使用了 `Plus`、`Mic`、`Camera` 图标，但未从 lucide-react 导入，导致编译失败。
+
+**复现步骤**
+1. 运行 `npx tsc --noEmit`
+2. 报错：Cannot find name 'Plus'
+
+**预期结果**
+编译通过，无错误
+
+**实际结果**
+TypeScript 编译失败
+
+**修复记录**
+- 修复人：AI Assistant
+- 修复日期：2026-03-21
+- 修复方案：在 import 语句中添加 Plus, Mic, Camera
+- 相关提交：待提交
+
+**验证记录**
+- 验证人：AI Assistant
+- 验证日期：2026-03-21
+- 验证结果：通过（tsc 无错误）
+
+---
+
+### BUG-002: useTripViewModel 缺少 Category 导入
+
+**基本信息**
+- 发现日期：2026-03-21
+- 发现人：AI Assistant（静态代码检查）
+- 模块：useTripViewModel
+- 优先级：P0
+- 状态：已修复
+
+**问题描述**
+useTripViewModel.ts 中使用了 `Category` 类型，但未从 types 导入。
+
+**修复记录**
+- 修复人：AI Assistant
+- 修复日期：2026-03-21
+- 修复方案：在 import 语句中添加 Category
+- 相关提交：待提交
+
+**验证记录**
+- 验证人：AI Assistant
+- 验证日期：2026-03-21
+- 验证结果：通过（tsc 无错误）
 
 ---
 

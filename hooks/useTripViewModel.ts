@@ -1,6 +1,6 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react';
-import { Trip, Expense, Member, SettlementStep, WalletTransaction } from '../types';
+import { Trip, Expense, Member, SettlementStep, WalletTransaction, Category } from '../types';
 import { MOCK_MEMBERS, MOCK_TRIPS, MOCK_EXPENSES, MOCK_WALLET_TRANSACTIONS } from '../data/mockData';
 
 // 使用 Mock 数据作为初始数据

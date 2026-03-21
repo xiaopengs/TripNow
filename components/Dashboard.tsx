@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Settings, MapPin, Wallet, Inbox, TrendingUp } from 'lucide-react';
+import { Settings, MapPin, Wallet, Inbox, TrendingUp, Plus, Mic, Camera } from 'lucide-react';
 import { Trip, Expense } from '../types';
 
 interface DashboardProps {
