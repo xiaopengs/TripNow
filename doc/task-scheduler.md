@@ -42,6 +42,7 @@
 | 2 | 16:01 | 2.1 账本创建页面 | ✅ | 完成 | 创建 CreateLedgerPage.tsx 组件，支持账本名称输入、8种币种选择、6种皮肤主题选择、预算设置 |
 | 3 | 16:02 | 2.3 影子成员系统 | ✅ | 完成 | 完善 ShadowMemberModal.tsx 组件，实现影子成员创建、认领流程、身份迁移功能，更新 useTripViewModel.ts 添加影子成员逻辑，与现有 mockData 兼容 |
 | 4 | 16:04 | 1.3 后端服务搭建 | ✅ | 完成 | 搭建 Node.js + Express 后端服务，实现账本/账单 CRUD API、CORS、Helmet 安全中间件、内存数据存储 |
+| 5 | 16:02 | 2.4 多账本管理 | ✅ | 完成 | 创建 Sidebar.tsx 侧边栏组件，实现多账本切换、归档/恢复功能；更新 TripList.tsx 支持多账本展示；更新 Dashboard.tsx 添加账本切换入口；创建 useMultiLedger.ts Hook；更新 App.tsx 集成多账本管理 |
 
 ---
 
