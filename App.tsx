@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from 'react';
-import { Home, List, PieChart, DollarSign, Loader2, Inbox as InboxIcon, Users } from 'lucide-react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import { Home, List, PieChart, DollarSign, Loader2 } from 'lucide-react';
 import Dashboard from './components/Dashboard';
 import Records from './components/Records';
 import Statistics from './components/Statistics';
@@ -10,12 +10,16 @@ import DailyConsumptionDetails from './components/DailyConsumptionDetails';
 import AddExpenseModal from './components/AddExpenseModal';
 import FabMenu from './components/FabMenu';
 import Inbox from './components/Inbox';
-import ShadowMemberModal from './components/ShadowMemberModal';
+import TripList from './components/TripList';
+import Sidebar from './components/Sidebar';
+import CreateLedgerModal from './components/CreateLedgerModal';
 import { useTripViewModel } from './hooks/useTripViewModel';
+import { useMultiLedger } from './hooks/useMultiLedger';
 import { parseExpenseFromImage, parseExpenseFromVoice } from './services/geminiService';
-import { Expense, Category } from './types';
+import { Expense, Category, Trip } from './types';
 
-type TabType = 'home' | 'records' | 'stats' | 'settle' | 'wallet' | 'payable' | 'daily' | 'members';
+type TabType = 'home' | 'records' | 'stats' | 'settle' | 'wallet' | 'payable' | 'daily';
+type ViewType = 'tripList' | 'dashboard';
 
 // 待处理账单类型
 interface PendingExpense {
@@ -33,16 +37,31 @@ interface PendingExpense {
 }
 
 const App: React.FC = () => {
+  const [currentView, setCurrentView] = useState<ViewType>('dashboard');
   const [currentTab, setCurrentTab] = useState<TabType>('home');
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isInboxOpen, setIsInboxOpen] = useState(false);
-  const [isShadowMemberModalOpen, setIsShadowMemberModalOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [modalInitialData, setModalInitialData] = useState<Partial<Expense> | undefined>();
   const [isProcessingAI, setIsProcessingAI] = useState(false);
   const [pendingItems, setPendingItems] = useState<PendingExpense[]>([]);
 
-  // 初始化 ViewModel
-  const vm = useTripViewModel();
+  // 初始化多账本管理
+  const { 
+    trips, 
+    currentTripId, 
+    setCurrentTripId, 
+    addTrip, 
+    archiveTrip, 
+    unarchiveTrip 
+  } = useMultiLedger();
+
+  // 获取当前账本数据
+  const currentTrip = trips.find(t => t.id === currentTripId) || trips[0];
+
+  // 初始化 ViewModel (使用当前账本)
+  const vm = useTripViewModel(currentTrip);
 
   // 添加待处理账单
   const addPendingItem = useCallback((item: Omit<PendingExpense, 'tempId' | 'createdAt'>) => {
@@ -181,7 +200,48 @@ const App: React.FC = () => {
     }, 1000);
   };
 
+  // 处理创建新账本
+  const handleCreateTrip = (tripData: Omit<Trip, 'id' | 'members' | 'status'>) => {
+    const newTrip = addTrip({
+      ...tripData,
+      members: [], // 新账本初始没有成员，需要后续添加
+    });
+    setCurrentTripId(newTrip.id);
+    setIsCreateModalOpen(false);
+    setCurrentView('dashboard');
+  };
+
+  // 处理选择账本
+  const handleSelectTrip = (trip: Trip) => {
+    setCurrentTripId(trip.id);
+    setCurrentView('dashboard');
+  };
+
+  // 处理归档账本
+  const handleArchiveTrip = (tripId: string) => {
+    archiveTrip(tripId);
+  };
+
+  // 处理恢复账本
+  const handleUnarchiveTrip = (tripId: string) => {
+    unarchiveTrip(tripId);
+  };
+
   const renderContent = () => {
+    // 账本列表视图
+    if (currentView === 'tripList') {
+      return (
+        <TripList
+          trips={trips}
+          currentTripId={currentTripId}
+          onSelect={handleSelectTrip}
+          onCreate={() => setIsCreateModalOpen(true)}
+          onOpenSidebar={() => setIsSidebarOpen(true)}
+        />
+      );
+    }
+
+    // Dashboard 视图
     switch (currentTab) {
       case 'home':
         return (
@@ -192,6 +252,7 @@ const App: React.FC = () => {
             walletBalance={vm.walletBalance}
             recentExpenses={vm.expenses}
             pendingCount={pendingItems.filter(i => i.status === 'pending').length}
+            onOpenSidebar={() => setIsSidebarOpen(true)}
             onAction={(type) => {
               if (type === 'wallet') {
                 setCurrentTab('wallet');
@@ -209,8 +270,6 @@ const App: React.FC = () => {
                 handleCameraAction();
               } else if (type === 'voice') {
                 handleVoiceAction();
-              } else if (type === 'members') {
-                setIsShadowMemberModalOpen(true);
               }
             }}
           />
@@ -315,6 +374,28 @@ const App: React.FC = () => {
         onRetry={handleRetry}
       />
 
+      {/* 侧边栏 - 多账本管理 */}
+      <Sidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+        trips={trips}
+        currentTripId={currentTripId}
+        onSelectTrip={setCurrentTripId}
+        onCreateTrip={() => {
+          setIsSidebarOpen(false);
+          setIsCreateModalOpen(true);
+        }}
+        onArchiveTrip={handleArchiveTrip}
+        onUnarchiveTrip={handleUnarchiveTrip}
+      />
+
+      {/* 创建账本模态框 */}
+      <CreateLedgerModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSubmit={handleCreateTrip}
+      />
+
       {/* FAB 扇形菜单 */}
       <FabMenu
         onManual={handleManualAction}
@@ -325,14 +406,20 @@ const App: React.FC = () => {
       {/* 底部导航 */}
       <nav className="fixed bottom-0 max-w-md w-full bg-white border-t border-gray-100 flex justify-between items-center px-6 py-4 pb-8 z-40 shadow-[0_-4px-30px_rgba(0,0,0,0.04)]">
         <button 
-          onClick={() => setCurrentTab('home')}
-          className={`flex flex-col items-center space-y-1.5 transition-all duration-300 ${['home', 'wallet', 'payable', 'daily'].includes(currentTab) ? 'text-orange-500 scale-110' : 'text-gray-400 hover:text-gray-600'}`}
+          onClick={() => {
+            setCurrentTab('home');
+            setCurrentView('dashboard');
+          }}
+          className={`flex flex-col items-center space-y-1.5 transition-all duration-300 ${['home', 'wallet', 'payable', 'daily'].includes(currentTab) && currentView === 'dashboard' ? 'text-orange-500 scale-110' : 'text-gray-400 hover:text-gray-600'}`}
         >
-          <Home size={20} strokeWidth={['home', 'wallet', 'payable', 'daily'].includes(currentTab) ? 3 : 2} />
+          <Home size={20} strokeWidth={['home', 'wallet', 'payable', 'daily'].includes(currentTab) && currentView === 'dashboard' ? 3 : 2} />
           <span className="text-[10px] font-black uppercase tracking-widest">首页</span>
         </button>
         <button 
-          onClick={() => setCurrentTab('records')}
+          onClick={() => {
+            setCurrentTab('records');
+            setCurrentView('dashboard');
+          }}
           className={`flex flex-col items-center space-y-1.5 transition-all duration-300 ${currentTab === 'records' ? 'text-orange-500 scale-110' : 'text-gray-400 hover:text-gray-600'}`}
         >
           <List size={20} strokeWidth={currentTab === 'records' ? 3 : 2} />
@@ -343,14 +430,20 @@ const App: React.FC = () => {
         <div className="w-16" />
 
         <button 
-          onClick={() => setCurrentTab('stats')}
+          onClick={() => {
+            setCurrentTab('stats');
+            setCurrentView('dashboard');
+          }}
           className={`flex flex-col items-center space-y-1.5 transition-all duration-300 ${currentTab === 'stats' ? 'text-orange-500 scale-110' : 'text-gray-400 hover:text-gray-600'}`}
         >
           <PieChart size={20} strokeWidth={currentTab === 'stats' ? 3 : 2} />
           <span className="text-[10px] font-black uppercase tracking-widest">统计</span>
         </button>
         <button 
-          onClick={() => setCurrentTab('settle')}
+          onClick={() => {
+            setCurrentTab('settle');
+            setCurrentView('dashboard');
+          }}
           className={`flex flex-col items-center space-y-1.5 transition-all duration-300 ${currentTab === 'settle' ? 'text-orange-500 scale-110' : 'text-gray-400 hover:text-gray-600'}`}
         >
           <DollarSign size={20} strokeWidth={currentTab === 'settle' ? 3 : 2} />

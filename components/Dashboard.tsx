@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Settings, MapPin, Wallet, Inbox, TrendingUp, Plus, Mic, Camera, ChevronDown } from 'lucide-react';
+import { Settings, MapPin, Wallet, Inbox, TrendingUp, Plus, Mic, Camera, ChevronDown, Users } from 'lucide-react';
 import { Trip, Expense } from '../types';
 
 interface DashboardProps {
@@ -54,6 +54,12 @@ const Dashboard: React.FC<DashboardProps> = ({ trip, totalSpent, myPayable, wall
                 {pendingCount > 9 ? '9+' : pendingCount}
               </span>
             )}
+          </button>
+          <button 
+            onClick={() => onAction('members')}
+            className="relative p-2 bg-white/10 backdrop-blur-md rounded-full hover:bg-white/20 transition-colors"
+          >
+            <Users size={20} className="text-white" />
           </button>
           <button className="p-2 bg-white/10 backdrop-blur-md rounded-full hover:bg-white/20 transition-colors">
             <Settings size={20} className="text-white" />
