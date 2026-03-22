@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Home, List, PieChart, DollarSign, Loader2, Inbox as InboxIcon } from 'lucide-react';
+import { Home, List, PieChart, DollarSign, Loader2, Inbox as InboxIcon, Users } from 'lucide-react';
 import Dashboard from './components/Dashboard';
 import Records from './components/Records';
 import Statistics from './components/Statistics';
@@ -10,11 +10,12 @@ import DailyConsumptionDetails from './components/DailyConsumptionDetails';
 import AddExpenseModal from './components/AddExpenseModal';
 import FabMenu from './components/FabMenu';
 import Inbox from './components/Inbox';
+import ShadowMemberModal from './components/ShadowMemberModal';
 import { useTripViewModel } from './hooks/useTripViewModel';
 import { parseExpenseFromImage, parseExpenseFromVoice } from './services/geminiService';
 import { Expense, Category } from './types';
 
-type TabType = 'home' | 'records' | 'stats' | 'settle' | 'wallet' | 'payable' | 'daily';
+type TabType = 'home' | 'records' | 'stats' | 'settle' | 'wallet' | 'payable' | 'daily' | 'members';
 
 // 待处理账单类型
 interface PendingExpense {
@@ -35,6 +36,7 @@ const App: React.FC = () => {
   const [currentTab, setCurrentTab] = useState<TabType>('home');
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isInboxOpen, setIsInboxOpen] = useState(false);
+  const [isShadowMemberModalOpen, setIsShadowMemberModalOpen] = useState(false);
   const [modalInitialData, setModalInitialData] = useState<Partial<Expense> | undefined>();
   const [isProcessingAI, setIsProcessingAI] = useState(false);
   const [pendingItems, setPendingItems] = useState<PendingExpense[]>([]);
@@ -207,6 +209,8 @@ const App: React.FC = () => {
                 handleCameraAction();
               } else if (type === 'voice') {
                 handleVoiceAction();
+              } else if (type === 'members') {
+                setIsShadowMemberModalOpen(true);
               }
             }}
           />

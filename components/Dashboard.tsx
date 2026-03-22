@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Settings, MapPin, Wallet, Inbox, TrendingUp, Plus, Mic, Camera } from 'lucide-react';
+import { Settings, MapPin, Wallet, Inbox, TrendingUp, Plus, Mic, Camera, ChevronDown } from 'lucide-react';
 import { Trip, Expense } from '../types';
 
 interface DashboardProps {
@@ -11,9 +11,10 @@ interface DashboardProps {
   onAction: (action: string) => void;
   recentExpenses: Expense[];
   pendingCount?: number;
+  onOpenSidebar?: () => void;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ trip, totalSpent, myPayable, walletBalance, onAction, recentExpenses, pendingCount = 0 }) => {
+const Dashboard: React.FC<DashboardProps> = ({ trip, totalSpent, myPayable, walletBalance, onAction, recentExpenses, pendingCount = 0, onOpenSidebar }) => {
   const progressPercent = Math.min(Math.round((totalSpent / trip.budget) * 100), 100);
   const today = new Date().toISOString().split('T')[0];
   const todaySpent = recentExpenses
@@ -32,6 +33,16 @@ const Dashboard: React.FC<DashboardProps> = ({ trip, totalSpent, myPayable, wall
           <span>{trip.location}</span>
         </div>
         <div className="absolute top-12 right-6 flex items-center gap-3">
+          {/* 账本切换入口 */}
+          {onOpenSidebar && (
+            <button 
+              onClick={onOpenSidebar}
+              className="flex items-center space-x-1 bg-white/20 backdrop-blur-md rounded-full px-3 py-1.5 hover:bg-white/30 transition-colors"
+            >
+              <span className="text-xs font-bold text-white">切换账本</span>
+              <ChevronDown size={14} className="text-white" />
+            </button>
+          )}
           {/* Inbox 入口 */}
           <button 
             onClick={() => onAction('inbox')}
