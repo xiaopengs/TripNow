@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { X, Check, MapPin, Palette, Users, ArrowRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { X, Check, MapPin, Palette, Users, ArrowRight, LocateFixed } from 'lucide-react';
 import { Trip } from '../types';
+import { getCurrentLocation, getCurrencyByLocationName, LocationInfo } from '../services/locationService';
 
 interface CreateLedgerModalProps {
   isOpen: boolean;
@@ -30,10 +31,10 @@ const CURRENCIES = [
   { code: 'HKD', symbol: 'HK$', name: '港币' },
 ];
 
-const CreateLedgerModal: React.FC<CreateLedgerModalProps> = ({ 
-  isOpen, 
-  onClose, 
-  onSubmit 
+const CreateLedgerModal: React.FC<CreateLedgerModalProps> = ({
+  isOpen,
+  onClose,
+  onSubmit
 }) => {
   const [step, setStep] = useState(1);
   const [name, setName] = useState('');
@@ -42,6 +43,44 @@ const CreateLedgerModal: React.FC<CreateLedgerModalProps> = ({
   const [skin, setSkin] = useState('orange');
   const [budget, setBudget] = useState('');
   const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
+  const [isLocating, setIsLocating] = useState(false);
+  const [locationError, setLocationError] = useState<string | null>(null);
+  const [detectedLocation, setDetectedLocation] = useState<LocationInfo | null>(null);
+
+  // 自动检测位置并设置货币
+  useEffect(() => {
+    if (isOpen && step === 1) {
+      detectLocation();
+    }
+  }, [isOpen]);
+
+  const detectLocation = async () => {
+    setIsLocating(true);
+    setLocationError(null);
+    try {
+      const locationInfo = await getCurrentLocation();
+      setDetectedLocation(locationInfo);
+      // 自动设置货币
+      setCurrency(locationInfo.currency);
+      // 如果位置名称为空，自动填充城市
+      if (!location && locationInfo.city) {
+        setLocation(locationInfo.city);
+      }
+    } catch (error) {
+      console.log('定位失败:', error);
+      setLocationError('无法获取位置，请手动输入');
+    } finally {
+      setIsLocating(false);
+    }
+  };
+
+  // 当目的地输入变化时，尝试识别货币
+  useEffect(() => {
+    if (location) {
+      const detected = getCurrencyByLocationName(location);
+      setCurrency(detected.currency);
+    }
+  }, [location]);
 
   if (!isOpen) return null;
 
@@ -131,6 +170,10 @@ const CreateLedgerModal: React.FC<CreateLedgerModalProps> = ({
             <div>
               <label className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 block">
                 目的地
+                {isLocating && <span className="ml-2 text-orange-500">定位中...</span>}
+                {detectedLocation && !isLocating && (
+                  <span className="ml-2 text-green-500">已定位到 {detectedLocation.city || detectedLocation.country}</span>
+                )}
               </label>
               <div className="relative">
                 <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
@@ -139,9 +182,25 @@ const CreateLedgerModal: React.FC<CreateLedgerModalProps> = ({
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
                   placeholder="例如：云南·大理"
-                  className="w-full bg-gray-50 rounded-2xl p-4 pl-12 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="w-full bg-gray-50 rounded-2xl p-4 pl-12 pr-12 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-orange-500"
                 />
+                <button
+                  onClick={detectLocation}
+                  disabled={isLocating}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-orange-100 rounded-full text-orange-500 hover:bg-orange-200 transition-colors disabled:opacity-50"
+                  title="重新定位"
+                >
+                  <LocateFixed size={16} className={isLocating ? 'animate-spin' : ''} />
+                </button>
               </div>
+              {locationError && (
+                <p className="text-xs text-gray-400 mt-2">{locationError}</p>
+              )}
+              {detectedLocation && (
+                <p className="text-xs text-green-600 mt-2">
+                  自动识别货币: {detectedLocation.symbol} {detectedLocation.currency}
+                </p>
+              )}
             </div>
 
             {/* Start Date */}
@@ -172,6 +231,9 @@ const CreateLedgerModal: React.FC<CreateLedgerModalProps> = ({
             <div>
               <label className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 block">
                 默认货币
+                {detectedLocation && (
+                  <span className="ml-2 text-green-500 text-xs">(根据位置自动识别)</span>
+                )}
               </label>
               <div className="grid grid-cols-2 gap-3">
                 {CURRENCIES.map(curr => (

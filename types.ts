@@ -61,3 +61,29 @@ export interface SettlementStep {
   amount: number;
   isSettled: boolean;
 }
+
+// ==================== 影子成员系统 ====================
+
+export type MemberType = 'real' | 'shadow';
+
+export interface ExtendedMember extends Member {
+  type: MemberType;
+  isClaimed: boolean;
+  claimedBy?: string; // 真实用户ID
+  claimToken?: string; // 认领令牌（用于邀请链接）
+  createdAt: string;
+}
+
+export interface ShadowMemberClaim {
+  shadowMemberId: string;
+  claimToken: string;
+  claimedBy: string;
+  claimedAt: string;
+}
+
+export interface MemberMigration {
+  fromMemberId: string; // 影子成员ID
+  toMemberId: string;   // 真实用户ID
+  tripId: string;
+  migratedAt: string;
+}
