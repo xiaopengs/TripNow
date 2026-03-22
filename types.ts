@@ -52,7 +52,7 @@ export interface Trip {
   members: Member[];
   budget: number;
   image?: string;
-  status: 'ongoing' | 'finished';
+  status: 'ongoing' | 'finished' | 'archived';
 }
 
 export interface SettlementStep {
