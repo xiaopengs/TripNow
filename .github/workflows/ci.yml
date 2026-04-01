@@ -1,0 +1,176 @@
+name: TripNow CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # 代码质量检查
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run ESLint
+        run: npm run lint
+      
+      - name: Check TypeScript
+        run: npm run type-check
+
+  # 单元测试
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run unit tests
+        run: npm run test:coverage
+      
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/coverage-final.json
+          flags: unittests
+          name: codecov-umbrella
+
+  # 构建 Web 版本
+  build-web:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build production
+        run: npm run build
+        env:
+          NODE_ENV: production
+      
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: web-build
+          path: dist/
+
+  # 构建小程序版本
+  build-miniapp:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install Taro CLI
+        run: npm install -g @tarojs/cli
+      
+      - name: Install weixin dependencies
+        working-directory: ./weixin
+        run: npm ci
+      
+      - name: Build WeChat Mini Program
+        working-directory: ./weixin
+        run: npm run build:weapp
+        env:
+          NODE_ENV: production
+      
+      - name: Upload miniapp artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: miniapp-build
+          path: weixin/dist/
+
+  # 自动部署到预览环境（develop 分支）
+  deploy-preview:
+    runs-on: ubuntu-latest
+    needs: [build-web, build-miniapp]
+    if: github.ref == 'refs/heads/develop'
+    steps:
+      - name: Download web build
+        uses: actions/download-artifact@v3
+        with:
+          name: web-build
+          path: dist/
+      
+      - name: Deploy to preview
+        run: |
+          echo "Deploying to preview environment..."
+          # TODO: 添加部署脚本（如 Vercel, Netlify 等）
+      
+      - name: Comment PR with preview URL
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '🚀 Preview deployed! URL: https://preview.tripnow.app'
+            })
+
+  # 性能测试
+  lighthouse:
+    runs-on: ubuntu-latest
+    needs: build-web
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Download web build
+        uses: actions/download-artifact@v3
+        with:
+          name: web-build
+          path: dist/
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install Lighthouse
+        run: npm install -g lighthouse
+      
+      - name: Run Lighthouse CI
+        run: |
+          lighthouse http://localhost:4173 \
+            --output json \
+            --output-path ./lighthouse-report.json \
+            --chrome-flags="--headless"
+        continue-on-error: true
+      
+      - name: Upload Lighthouse report
+        uses: actions/upload-artifact@v3
+        with:
+          name: lighthouse-report
+          path: lighthouse-report.json
