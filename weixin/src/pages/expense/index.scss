@@ -1,3 +1,106 @@
 .expense {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+/* 金额区域 */
+.amount-section {
+  background: linear-gradient(135deg, #FF6B35 0%, #FF9A6C 100%);
+  padding: 40px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.currency {
+  font-size: 32px;
+  color: white;
+  font-weight: 300;
+}
+
+.amount-input {
+  font-size: 48px;
+  color: white;
+  font-weight: bold;
+  flex: 1;
+  max-width: 200px;
+}
+
+/* 表单 */
+.form {
+  background: white;
+  margin: 16px;
+  border-radius: 16px;
   padding: 20px;
+}
+
+.form-item {
+  padding: 16px 0;
+  border-bottom: 1px solid #f0f0f0;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.label {
+  font-size: 14px;
+  color: #999;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.input {
+  width: 100%;
+  font-size: 16px;
+  color: #333;
+  padding: 12px;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.picker {
+  padding: 12px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #333;
+}
+
+/* 成员选择 */
+.member-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.member-chip {
+  padding: 8px 16px;
+  background: #f0f0f0;
+  border-radius: 20px;
+  font-size: 14px;
+  color: #666;
+  transition: all 0.2s;
+
+  &.active {
+    background: #FF6B35;
+    color: white;
+  }
+}
+
+/* 提交按钮 */
+.submit-btn {
+  margin: 32px 20px;
+  padding: 16px;
+  background: linear-gradient(135deg, #FF6B35 0%, #FF9A6C 100%);
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(255, 107, 53, 0.3);
+}
+
+.submit-text {
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
 }

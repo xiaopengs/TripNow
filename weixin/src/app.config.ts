@@ -2,7 +2,8 @@ export default {
   pages: [
     'pages/index/index',
     'pages/ledger/index',
-    'pages/expense/index'
+    'pages/expense/index',
+    'pages/ledger-detail/index'
   ],
   window: {
     backgroundTextStyle: 'light',
