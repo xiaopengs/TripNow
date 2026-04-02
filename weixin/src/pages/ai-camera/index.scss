@@ -1,0 +1,88 @@
+.ai-camera {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.camera-placeholder {
+  background: white;
+  padding: 40px 24px;
+  border-radius: 24px;
+  text-align: center;
+  width: 100%;
+  max-width: 320px;
+}
+
+.camera-icon {
+  font-size: 80px;
+  display: block;
+  margin-bottom: 24px;
+}
+
+.camera-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.camera-desc {
+  font-size: 14px;
+  color: #999;
+  display: block;
+  margin-bottom: 32px;
+}
+
+.feature-list {
+  margin-bottom: 32px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.feature-icon {
+  font-size: 18px;
+  color: #52c41a;
+  font-weight: bold;
+}
+
+.start-btn {
+  padding: 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 24px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+.dev-notice {
+  padding: 12px;
+  background: #fff7e6;
+  border-radius: 12px;
+  border: 1px solid #ffd591;
+}
+
+.notice-icon {
+  font-size: 20px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.notice-text {
+  font-size: 12px;
+  color: #fa8c16;
+}

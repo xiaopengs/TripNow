@@ -3,7 +3,10 @@ export default {
     'pages/index/index',
     'pages/ledger/index',
     'pages/expense/index',
-    'pages/ledger-detail/index'
+    'pages/ledger-detail/index',
+    'pages/settlement/index',
+    'pages/ai-camera/index',
+    'pages/voice/index'
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -27,5 +30,13 @@ export default {
         selectedIconPath: './assets/icons/add-active.png'
       }
     ]
+  },
+  permission: {
+    "scope.camera": {
+      desc: "用于拍照识别小票"
+    },
+    "scope.record": {
+      desc: "用于语音记账"
+    }
   }
 }
