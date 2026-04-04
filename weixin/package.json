@@ -39,8 +39,8 @@
     "@tarojs/taro": "^4.1.11",
     "@tarojs/webpack5-runner": "^4.1.11",
     "@tarojs/with-weapp": "^4.1.11",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
     "babel-preset-taro": "^4.1.11",
     "mobx": "^6.15.0",
     "mobx-react-lite": "^4.1.1",
@@ -53,7 +53,7 @@
     "typescript": "^6.0.2",
     "webpack": "^5.105.4",
     "webpack-cli": "^7.0.2",
-    "miniprogram-ci": "^3.15.0",
+    "miniprogram-ci": "^2.1.31",
     "commander": "^12.0.0"
   }
 }
