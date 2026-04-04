@@ -1,88 +1,307 @@
-.ai-camera {
+@import '../../styles/variables.scss';
+
+.ai-camera-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
+  background: $bg-page;
 }
 
-.camera-placeholder {
-  background: white;
-  padding: 40px 24px;
-  border-radius: 24px;
+/* ============================ 选择照片 ============================ */
+.camera-choose {
+  padding: 32rpx;
+}
+
+.camera-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16rpx;
+  padding: 48rpx 0 40rpx;
+}
+
+.camera-hero-icon { font-size: 80rpx; }
+
+.camera-hero-title {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: $text-primary;
+}
+
+.camera-hero-desc {
+  font-size: 26rpx;
+  color: $text-hint;
   text-align: center;
-  width: 100%;
-  max-width: 320px;
 }
 
-.camera-icon {
-  font-size: 80px;
-  display: block;
-  margin-bottom: 24px;
-}
-
-.camera-title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  display: block;
-  margin-bottom: 12px;
-}
-
-.camera-desc {
-  font-size: 14px;
-  color: #999;
-  display: block;
-  margin-bottom: 32px;
-}
-
-.feature-list {
-  margin-bottom: 32px;
-}
-
-.feature-item {
+.camera-actions {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 0;
-  border-bottom: 1px solid #f0f0f0;
+  flex-direction: column;
+  gap: 20rpx;
+  margin-bottom: 40rpx;
+}
 
-  &:last-child {
-    border-bottom: none;
+.action-card {
+  @include flex-between;
+  background: #fff;
+  border-radius: $radius-lg;
+  padding: 28rpx;
+  box-shadow: $shadow-card;
+
+  &:active { background: #FAFAFA; }
+
+  &.primary {
+    border-left: 8rpx solid $primary;
   }
 }
 
-.feature-icon {
-  font-size: 18px;
-  color: #52c41a;
-  font-weight: bold;
+.action-icon-circle {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 50%;
+  background: $primary-light;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.secondary {
+    background: #EFF6FF;
+  }
 }
 
-.start-btn {
-  padding: 16px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 24px;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 24px;
+.action-emoji { font-size: 40rpx; }
+
+.action-text-group {
+  flex: 1;
+  margin-left: 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
 }
 
-.dev-notice {
-  padding: 12px;
-  background: #fff7e6;
-  border-radius: 12px;
-  border: 1px solid #ffd591;
+.action-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: $text-primary;
 }
 
-.notice-icon {
-  font-size: 20px;
+.action-desc {
+  font-size: 24rpx;
+  color: $text-hint;
+}
+
+/* ============================ 提示 ============================ */
+.tips-section {
+  background: #FFFBEB;
+  border-radius: $radius-md;
+  padding: 24rpx 28rpx;
+}
+
+.tips-title {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #92400E;
+  margin-bottom: 12rpx;
   display: block;
-  margin-bottom: 8px;
 }
 
-.notice-text {
-  font-size: 12px;
-  color: #fa8c16;
+.tips-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.tip-item {
+  font-size: 24rpx;
+  color: #A16207;
+  line-height: 1.5;
+}
+
+/* ============================ 识别中 ============================ */
+.camera-recognizing {
+  position: relative;
+  min-height: 60vh;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-img {
+  width: 100%;
+  height: 60vh;
+}
+
+.recognizing-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20rpx;
+}
+
+.spinner {
+  width: 64rpx;
+  height: 64rpx;
+  border: 4rpx solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.recognizing-text {
+  font-size: 30rpx;
+  color: #fff;
+  font-weight: 500;
+}
+
+/* ============================ 识别结果 ============================ */
+.camera-result {
+  padding: 32rpx;
+}
+
+.result-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: $text-primary;
+  margin-bottom: 24rpx;
+  display: block;
+}
+
+.result-img {
+  width: 100%;
+  height: 400rpx;
+  border-radius: $radius-md;
+  margin-bottom: 24rpx;
+}
+
+.result-card {
+  background: #fff;
+  border-radius: $radius-lg;
+  padding: 28rpx;
+  box-shadow: $shadow-card;
+  margin-bottom: 32rpx;
+}
+
+.result-amount-row {
+  @include flex-between;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+  margin-bottom: 16rpx;
+}
+
+.result-amount {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: $primary;
+}
+
+.result-detail-row {
+  @include flex-between;
+  padding: 12rpx 0;
+}
+
+.result-label {
+  font-size: 26rpx;
+  color: $text-hint;
+}
+
+.result-value {
+  font-size: 26rpx;
+  color: $text-primary;
+  font-weight: 500;
+}
+
+.confidence-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.confidence-bar {
+  width: 160rpx;
+  height: 12rpx;
+  background: #f0f0f0;
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+
+.confidence-fill {
+  height: 100%;
+  border-radius: 6rpx;
+
+  &.high { background: $primary; }
+  &.low { background: #F59E0B; }
+}
+
+.confidence-text {
+  font-size: 24rpx;
+  font-weight: 600;
+
+  &.high { color: $primary; }
+  &.low { color: #F59E0B; }
+}
+
+/* 按钮 */
+.result-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.result-btn {
+  border-radius: $radius-sm;
+  padding: 24rpx;
+  text-align: center;
+
+  &:active { opacity: 0.85; }
+
+  &.primary { background: $primary; }
+  &.outline { background: #fff; border: 2rpx solid #ddd; }
+  &.ghost { background: transparent; }
+}
+
+.result-btn-text {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #fff;
+
+  &.outline { color: $text-secondary; }
+  &.ghost { color: $text-hint; }
+}
+
+/* ============================ 识别失败 ============================ */
+.camera-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 48rpx;
+  gap: 16rpx;
+}
+
+.error-icon { font-size: 80rpx; }
+
+.error-title {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.error-msg {
+  font-size: 26rpx;
+  color: $text-hint;
+  text-align: center;
+  margin-bottom: 24rpx;
+}
+
+.error-actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
 }

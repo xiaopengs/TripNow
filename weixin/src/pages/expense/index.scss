@@ -1,106 +1,150 @@
-.expense {
+.smart-add-page {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: #f5f6f8;
+  padding-bottom: 40rpx;
 }
 
-/* 金额区域 */
-.amount-section {
-  background: linear-gradient(135deg, #FF6B35 0%, #FF9A6C 100%);
-  padding: 40px 20px;
+/* 页面头部 */
+.page-header {
+  padding: 48rpx 32rpx 32rpx;
+}
+
+.page-title {
+  font-size: 44rpx;
+  font-weight: bold;
+  color: #1a1a1a;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.page-subtitle {
+  font-size: 26rpx;
+  color: #999;
+}
+
+/* 三大入口卡片 */
+.entry-grid {
+  display: flex;
+  justify-content: center;
+  gap: 24rpx;
+  padding: 20rpx 32rpx 48rpx;
+}
+
+.entry-card {
+  width: 200rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 24rpx;
+  padding: 36rpx 20rpx 28rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.06);
+  gap: 14rpx;
+
+  &:active {
+    transform: scale(0.96);
+    box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
+  }
+}
+
+.entry-icon-wrap {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
 }
 
-.currency {
-  font-size: 32px;
-  color: white;
-  font-weight: 300;
+.icon-orange {
+  background: linear-gradient(135deg, #FF7043 0%, #FF5722 100%);
 }
 
-.amount-input {
-  font-size: 48px;
-  color: white;
-  font-weight: bold;
-  flex: 1;
-  max-width: 200px;
+.icon-blue {
+  background: linear-gradient(135deg, #42A5F5 0%, #1E88E5 100%);
 }
 
-/* 表单 */
-.form {
-  background: white;
-  margin: 16px;
-  border-radius: 16px;
-  padding: 20px;
+.icon-green {
+  background: linear-gradient(135deg, #66BB6A 0%, #43A047 100%);
 }
 
-.form-item {
-  padding: 16px 0;
-  border-bottom: 1px solid #f0f0f0;
+.entry-icon {
+  font-size: 44rpx;
+  color: #ffffff;
+}
+
+.entry-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.entry-desc {
+  font-size: 22rpx;
+  color: #999;
+  text-align: center;
+}
+
+/* 快捷操作区 */
+.quick-actions {
+  margin: 0 24rpx;
+  background: #ffffff;
+  border-radius: 24rpx;
+  padding: 8rpx 0;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.04);
+}
+
+.section-label {
+  font-size: 26rpx;
+  color: #999;
+  font-weight: 500;
+  padding: 24rpx 28rpx 12rpx;
+  display: block;
+}
+
+.action-list {
+  padding: 0 8rpx;
+}
+
+.action-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 20rpx;
+  border-bottom: 1px solid #f5f5f5;
 
   &:last-child {
     border-bottom: none;
   }
-}
 
-.label {
-  font-size: 14px;
-  color: #999;
-  margin-bottom: 12px;
-  display: block;
-}
-
-.input {
-  width: 100%;
-  font-size: 16px;
-  color: #333;
-  padding: 12px;
-  background: #f9f9f9;
-  border-radius: 8px;
-}
-
-.picker {
-  padding: 12px;
-  background: #f9f9f9;
-  border-radius: 8px;
-  font-size: 16px;
-  color: #333;
-}
-
-/* 成员选择 */
-.member-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.member-chip {
-  padding: 8px 16px;
-  background: #f0f0f0;
-  border-radius: 20px;
-  font-size: 14px;
-  color: #666;
-  transition: all 0.2s;
-
-  &.active {
-    background: #FF6B35;
-    color: white;
+  &:active {
+    background: #fafafa;
   }
 }
 
-/* 提交按钮 */
-.submit-btn {
-  margin: 32px 20px;
-  padding: 16px;
-  background: linear-gradient(135deg, #FF6B35 0%, #FF9A6C 100%);
-  border-radius: 24px;
-  text-align: center;
-  box-shadow: 0 4px 16px rgba(255, 107, 53, 0.3);
+.action-icon {
+  font-size: 40rpx;
+  margin-right: 20rpx;
 }
 
-.submit-text {
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
+.action-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.action-name {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.action-hint {
+  font-size: 22rpx;
+  color: #bbb;
+}
+
+.action-arrow {
+  font-size: 32rpx;
+  color: #ccc;
 }

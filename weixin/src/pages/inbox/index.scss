@@ -1,0 +1,190 @@
+@import '../../styles/variables.scss';
+
+.inbox-page {
+  min-height: 100vh;
+  background: $bg-page;
+}
+
+.inbox-header {
+  @include flex-between;
+  padding: 24rpx 32rpx;
+  background: #fff;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04);
+}
+
+.inbox-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: $text-primary;
+}
+
+.inbox-count {
+  font-size: 26rpx;
+  color: $text-hint;
+  background: #F5F5F5;
+  border-radius: 20rpx;
+  padding: 4rpx 16rpx;
+}
+
+/* 空状态 */
+.inbox-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 48rpx;
+  gap: 16rpx;
+}
+
+.inbox-empty-icon { font-size: 80rpx; }
+
+.inbox-empty-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: $text-secondary;
+}
+
+.inbox-empty-hint {
+  font-size: 26rpx;
+  color: $text-hint;
+  text-align: center;
+}
+
+.inbox-action-btn {
+  margin-top: 24rpx;
+  background: $primary;
+  border-radius: 40rpx;
+  padding: 20rpx 48rpx;
+
+  &:active { opacity: 0.85; }
+}
+
+.inbox-action-text {
+  font-size: 28rpx;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* 列表 */
+.inbox-list {
+  padding: 16rpx 24rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.inbox-item {
+  background: #fff;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  box-shadow: $shadow-card;
+}
+
+.inbox-img {
+  width: 100%;
+  height: 300rpx;
+}
+
+.inbox-content {
+  padding: 24rpx;
+}
+
+.inbox-main {
+  @include flex-between;
+  margin-bottom: 20rpx;
+}
+
+.inbox-icon {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 18rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  Text { font-size: 36rpx; }
+}
+
+.inbox-info {
+  flex: 1;
+  margin: 0 16rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+  overflow: hidden;
+}
+
+.inbox-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: $text-primary;
+  @include text-ellipsis;
+}
+
+.inbox-meta {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.confidence {
+  font-size: 22rpx;
+  padding: 2rpx 10rpx;
+  border-radius: 8rpx;
+
+  &.high {
+    background: $primary-light;
+    color: $primary-dark;
+  }
+
+  &.low {
+    background: #FEF3C7;
+    color: #92400E;
+  }
+}
+
+.inbox-category {
+  font-size: 22rpx;
+  color: $text-hint;
+}
+
+.inbox-amount {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: $text-primary;
+  flex-shrink: 0;
+}
+
+/* 操作 */
+.inbox-actions {
+  display: flex;
+  gap: 16rpx;
+  border-top: 1rpx solid #f0f0f0;
+  padding-top: 20rpx;
+}
+
+.inbox-btn {
+  flex: 1;
+  text-align: center;
+  padding: 14rpx 0;
+  border-radius: $radius-sm;
+  font-size: 26rpx;
+  font-weight: 500;
+
+  &:active { opacity: 0.7; }
+
+  &.confirm {
+    background: $primary-light;
+    color: $primary-dark;
+  }
+
+  &.edit {
+    background: #EFF6FF;
+    color: #3B82F6;
+  }
+
+  &.delete {
+    background: #FEF2F2;
+    color: #EF4444;
+  }
+}

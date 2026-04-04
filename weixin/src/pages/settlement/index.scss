@@ -1,193 +1,281 @@
-.settlement {
+@import '../../styles/variables.scss';
+
+.settlement-page {
   min-height: 100vh;
-  background: #f5f5f5;
-  padding: 20px;
+  background: $bg-page;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 120rpx);
 }
 
-.settlement-header {
-  margin-bottom: 20px;
-}
-
-.title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  display: block;
-  margin-bottom: 8px;
-}
-
-.subtitle {
-  font-size: 14px;
-  color: #999;
-}
-
-.generate-card {
-  background: white;
-  padding: 24px;
-  border-radius: 16px;
-  margin-bottom: 20px;
-}
-
-.info-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 16px;
-}
-
-.info-label {
-  font-size: 14px;
-  color: #999;
-}
-
-.info-value {
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
-}
-
-.generate-btn {
-  margin-top: 24px;
-  padding: 16px;
-  background: linear-gradient(135deg, #FF6B35 0%, #FF9A6C 100%);
-  border-radius: 24px;
-  text-align: center;
-  color: white;
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.settlements {
-  background: white;
-  border-radius: 16px;
-  padding: 20px;
-}
-
-.settlements-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.settlements-title {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-}
-
-.settlements-count {
-  font-size: 14px;
-  color: #FF6B35;
-  background: #fff5f0;
-  padding: 4px 12px;
-  border-radius: 12px;
-}
-
-.settlement-item {
-  padding: 16px 0;
-  border-bottom: 1px solid #f5f5f5;
-
-  &:last-child {
-    border-bottom: none;
-  }
-}
-
-.settlement-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
-}
-
-.member-badge {
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 500;
-
-  &.from {
-    background: #f0f0f0;
-    color: #666;
-  }
-
-  &.to {
-    background: #fff5f0;
-    color: #FF6B35;
-  }
-}
-
-.arrow {
-  font-size: 20px;
-  color: #999;
-}
-
-.settlement-amount {
-  margin-bottom: 12px;
-}
-
-.amount {
-  font-size: 24px;
-  font-weight: bold;
-  color: #FF6B35;
-}
-
-.settlement-actions {
-  display: flex;
-  gap: 12px;
-}
-
-.action-btn {
-  flex: 1;
-  padding: 12px;
-  border-radius: 20px;
-  text-align: center;
-  font-size: 14px;
-  font-weight: 500;
-
-  &.wechat {
-    background: #07c160;
-    color: white;
-  }
-
-  &.confirm {
-    background: #f0f0f0;
-    color: #666;
-  }
-}
-
-.no-settlement {
+/* ============================ 头部 ============================ */
+.settle-hero {
+  background: #fff;
+  padding: 40rpx 32rpx;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 60px 0;
+  gap: 8rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04);
 }
 
-.no-icon {
-  font-size: 64px;
-  margin-bottom: 16px;
+.settle-hero-title {
+  font-size: 26rpx;
+  color: $text-hint;
 }
 
-.no-text {
-  font-size: 16px;
-  color: #999;
+.settle-hero-label {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: $text-primary;
 }
 
-.settlement-empty {
-  min-height: 100vh;
+.settle-hero-amount {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: $primary;
+  margin-top: 4rpx;
+}
+
+/* ============================ Section ============================ */
+.settle-section {
+  margin: 20rpx 24rpx;
+  background: #fff;
+  border-radius: $radius-lg;
+  padding: 28rpx 32rpx;
+  box-shadow: $shadow-card;
+}
+
+.settle-section-header {
+  @include flex-between;
+  margin-bottom: 24rpx;
+}
+
+.settle-section-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.settle-section-hint {
+  font-size: 24rpx;
+  color: $text-hint;
+}
+
+/* ============================ 成员余额 ============================ */
+.balance-grid {
+  display: flex;
+  gap: 16rpx;
+  flex-wrap: wrap;
+}
+
+.balance-card {
+  width: calc(33.33% - 12rpx);
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 6rpx;
+  padding: 24rpx 12rpx;
+  border-radius: $radius-md;
+  background: #FAFAFA;
+
+  &.positive { background: #F0FDF4; }
+  &.negative { background: #FEF2F2; }
+  &.zero { background: #F8F9FA; }
+}
+
+.balance-avatar {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background: #E5E7EB;
+  display: flex;
   align-items: center;
   justify-content: center;
+
+  Text {
+    font-size: 28rpx;
+    font-weight: 600;
+    color: $text-secondary;
+  }
 }
 
-.empty-icon {
-  font-size: 64px;
-  margin-bottom: 16px;
+.positive .balance-avatar { background: $primary-light; }
+.negative .balance-avatar { background: #FEE2E2; }
+
+.positive .balance-avatar Text { color: $primary-dark; }
+.negative .balance-avatar Text { color: #EF4444; }
+
+.balance-name {
+  font-size: 24rpx;
+  color: $text-secondary;
+  font-weight: 500;
 }
 
-.empty-text {
-  font-size: 16px;
-  color: #999;
+.balance-value {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: $text-primary;
+}
+
+.positive .balance-value { color: $primary; }
+.negative .balance-value { color: #EF4444; }
+
+.balance-hint {
+  font-size: 20rpx;
+  color: $text-hint;
+}
+
+/* ============================ 已结清 ============================ */
+.all-done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48rpx 0;
+  gap: 16rpx;
+}
+
+.done-icon { font-size: 80rpx; }
+
+.done-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.done-hint {
+  font-size: 26rpx;
+  color: $text-hint;
+}
+
+/* ============================ 结算列表 ============================ */
+.settle-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.settle-item {
+  background: #FAFAFA;
+  border-radius: $radius-md;
+  padding: 28rpx;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+
+  &.settled {
+    opacity: 0.5;
+    background: #F0F0F0;
+  }
+}
+
+.settle-side {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.settle-avatar {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.from { background: #FEE2E2; }
+  &.to { background: $primary-light; }
+
+  Text {
+    font-size: 24rpx;
+    font-weight: 600;
+  }
+}
+
+.from .settle-avatar Text { color: #EF4444; }
+.to .settle-avatar Text { color: $primary-dark; }
+
+.settle-member-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.settle-tag {
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+  font-weight: 500;
+
+  &.pay { background: #FEE2E2; color: #EF4444; }
+  &.receive { background: $primary-light; color: $primary-dark; }
+}
+
+/* 金额和箭头 */
+.settle-center {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding-left: 68rpx;
+}
+
+.settle-amount {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: $text-primary;
+}
+
+.settle-arrow {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.arrow-line {
+  width: 60rpx;
+  height: 2rpx;
+  background: #D1D5DB;
+}
+
+.arrow-head {
+  font-size: 28rpx;
+  color: #D1D5DB;
+}
+
+/* 标记已付 */
+.settle-check-btn {
+  position: absolute;
+  top: 24rpx;
+  right: 24rpx;
+  background: $primary;
+  border-radius: 20rpx;
+  padding: 8rpx 24rpx;
+
+  &:active { opacity: 0.85; }
+
+  Text {
+    font-size: 22rpx;
+    color: #fff;
+    font-weight: 500;
+  }
+}
+
+/* ============================ 分享 ============================ */
+.settle-share {
+  padding: 24rpx;
+}
+
+.share-btn {
+  background: #fff;
+  border-radius: $radius-sm;
+  padding: 24rpx;
+  text-align: center;
+  box-shadow: $shadow-card;
+
+  &:active { background: #F8F8F8; }
+}
+
+.share-btn-text {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: $text-primary;
 }

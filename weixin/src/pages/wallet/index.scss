@@ -1,0 +1,205 @@
+@import '../../styles/variables.scss';
+
+.wallet-page {
+  min-height: 100vh;
+  background: $bg-page;
+}
+
+.wallet-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  font-size: 28rpx;
+  color: $text-hint;
+}
+
+/* Hero */
+.wallet-hero {
+  background: #fff;
+  padding: 56rpx 32rpx 48rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04);
+}
+
+.wallet-hero-label {
+  font-size: 28rpx;
+  color: $text-hint;
+}
+
+.wallet-hero-amount {
+  font-size: 64rpx;
+  font-weight: 700;
+  color: $primary;
+
+  &.negative { color: #EF4444; }
+}
+
+.wallet-hero-hint {
+  font-size: 24rpx;
+  color: $text-hint;
+}
+
+/* Action */
+.wallet-action {
+  margin: 24rpx;
+  background: $primary;
+  border-radius: $radius-md;
+  padding: 28rpx;
+  text-align: center;
+
+  &:active { opacity: 0.85; }
+}
+
+.wallet-action-text {
+  font-size: 30rpx;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* 充值 */
+.recharge-card {
+  margin: 24rpx;
+  background: #fff;
+  border-radius: $radius-lg;
+  padding: 32rpx;
+  box-shadow: $shadow-card;
+}
+
+.recharge-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: $text-primary;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.recharge-input-wrap {
+  @include flex-center;
+  background: #F8F9FA;
+  border-radius: $radius-sm;
+  padding: 0 24rpx;
+  gap: 8rpx;
+  margin-bottom: 24rpx;
+}
+
+.recharge-symbol {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.recharge-input {
+  flex: 1;
+  height: 80rpx;
+  font-size: 32rpx;
+  color: $text-primary;
+}
+
+.recharge-btns {
+  display: flex;
+  gap: 16rpx;
+}
+
+.recharge-btn {
+  flex: 1;
+  text-align: center;
+  padding: 20rpx;
+  border-radius: $radius-sm;
+  font-size: 28rpx;
+  font-weight: 600;
+
+  &:active { opacity: 0.7; }
+
+  &.cancel {
+    background: #F5F5F5;
+    color: $text-secondary;
+  }
+
+  &.confirm {
+    background: $primary;
+    color: #fff;
+  }
+}
+
+/* 记录 */
+.wallet-section {
+  margin: 0 24rpx;
+  background: #fff;
+  border-radius: $radius-lg;
+  padding: 28rpx 32rpx;
+  box-shadow: $shadow-card;
+}
+
+.wallet-section-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: $text-primary;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.wallet-list-empty {
+  padding: 32rpx 0;
+  text-align: center;
+  font-size: 26rpx;
+  color: $text-hint;
+}
+
+.wallet-record-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.wallet-record {
+  @include flex-between;
+}
+
+.record-left {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.record-avatar {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  background: $primary-light;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  Text {
+    font-size: 24rpx;
+    font-weight: 600;
+    color: $primary-dark;
+  }
+}
+
+.record-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.record-name {
+  font-size: 26rpx;
+  color: $text-primary;
+  font-weight: 500;
+}
+
+.record-time {
+  font-size: 22rpx;
+  color: $text-hint;
+}
+
+.record-amount {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: $primary;
+}

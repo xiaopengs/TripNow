@@ -1,0 +1,166 @@
+@import '../../styles/variables.scss';
+
+.detail-page {
+  min-height: 100vh;
+  background: $bg-page;
+}
+
+.detail-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  font-size: 28rpx;
+  color: $text-hint;
+}
+
+/* ============================ 金额 Hero ============================ */
+.detail-hero {
+  padding: 64rpx 32rpx 48rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.detail-amount {
+  font-size: 64rpx;
+  font-weight: 700;
+  color: #fff;
+}
+
+.detail-cat {
+  font-size: 28rpx;
+  color: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.2);
+  border-radius: 20rpx;
+  padding: 6rpx 24rpx;
+}
+
+/* ============================ 卡片 ============================ */
+.detail-card {
+  background: #fff;
+  border-radius: $radius-lg;
+  padding: 28rpx 32rpx;
+  margin: 20rpx 24rpx;
+  box-shadow: $shadow-card;
+}
+
+.detail-card-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: $text-primary;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.detail-row {
+  @include flex-between;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+
+  &:last-child { border-bottom: none; }
+}
+
+.detail-label {
+  font-size: 26rpx;
+  color: $text-hint;
+}
+
+.detail-value {
+  font-size: 26rpx;
+  color: $text-primary;
+  font-weight: 500;
+  max-width: 400rpx;
+  text-align: right;
+  @include text-ellipsis;
+}
+
+/* 图片 */
+.detail-img-section {
+  margin-top: 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.detail-img {
+  width: 100%;
+  border-radius: $radius-sm;
+}
+
+/* ============================ 分摊成员 ============================ */
+.split-member-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.split-member-row {
+  @include flex-between;
+}
+
+.split-avatar {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  Text {
+    font-size: 24rpx;
+    font-weight: 600;
+    color: $text-primary;
+  }
+}
+
+.split-name {
+  flex: 1;
+  font-size: 28rpx;
+  color: $text-primary;
+  margin-left: 16rpx;
+}
+
+.split-share {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.payer-tag {
+  font-size: 20rpx;
+  color: $primary;
+  background: $primary-light;
+  border-radius: 8rpx;
+  padding: 4rpx 12rpx;
+  margin-left: 12rpx;
+}
+
+/* ============================ 操作 ============================ */
+.detail-actions {
+  display: flex;
+  gap: 20rpx;
+  padding: 24rpx;
+}
+
+.detail-btn {
+  flex: 1;
+  text-align: center;
+  padding: 24rpx;
+  border-radius: $radius-sm;
+  font-size: 28rpx;
+  font-weight: 600;
+
+  &:active { opacity: 0.85; }
+
+  &.edit {
+    background: #EFF6FF;
+    color: #3B82F6;
+  }
+
+  &.delete {
+    background: #FEF2F2;
+    color: #EF4444;
+  }
+}

@@ -14,7 +14,9 @@ const config: UserConfigExport = defineConfig({
   plugins: [],
   defineConstants: {},
   copy: {
-    patterns: [],
+    patterns: [
+      { from: 'src/assets/', to: 'assets/' }
+    ],
     options: {}
   },
   framework: 'react',
@@ -49,8 +51,8 @@ const config: UserConfigExport = defineConfig({
     },
     webpackChain(chain) {},
     output: {
-      filename: 'js/[name].[hash:8].js',
-      chunkFilename: 'js/[name].[hash:8].js'
+      filename: '[name].js',
+      chunkFilename: 'common/[name].js'
     }
   },
   h5: {

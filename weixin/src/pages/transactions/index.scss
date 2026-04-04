@@ -1,0 +1,170 @@
+@import '../../styles/variables.scss';
+
+.transactions-page {
+  min-height: 100vh;
+  background: $bg-page;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 120rpx);
+}
+
+/* ============================ 头部统计 ============================ */
+.tx-header {
+  background: #fff;
+  padding: 24rpx 32rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04);
+}
+
+.tx-stats {
+  display: flex;
+  align-items: baseline;
+  gap: 12rpx;
+  margin-bottom: 20rpx;
+}
+
+.tx-stats-label {
+  font-size: 28rpx;
+  color: $text-hint;
+}
+
+.tx-stats-value {
+  font-size: 44rpx;
+  font-weight: 700;
+  color: $text-primary;
+}
+
+.tx-filter-row {
+  display: flex;
+  gap: 16rpx;
+}
+
+.tx-filter-chip {
+  padding: 10rpx 28rpx;
+  border-radius: 28rpx;
+  font-size: 24rpx;
+  color: $text-hint;
+  background: #F5F5F5;
+  transition: all 0.2s;
+
+  &:active { opacity: 0.7; }
+
+  &.active {
+    background: $primary-light;
+    color: $primary-dark;
+    font-weight: 600;
+  }
+}
+
+/* ============================ 空状态 ============================ */
+.tx-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 160rpx 0;
+  gap: 16rpx;
+}
+
+.tx-empty-icon { font-size: 96rpx; }
+
+.tx-empty-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: $text-secondary;
+}
+
+.tx-empty-hint {
+  font-size: 26rpx;
+  color: $text-hint;
+}
+
+/* ============================ 账单列表 ============================ */
+.tx-list {
+  padding: 16rpx 0;
+}
+
+.day-group {
+  margin-bottom: 16rpx;
+}
+
+.day-header {
+  @include flex-between;
+  padding: 20rpx 32rpx 12rpx;
+  position: sticky;
+  top: 0;
+  background: $bg-page;
+  z-index: 5;
+}
+
+.day-date {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: $text-secondary;
+}
+
+.day-total {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: $text-hint;
+}
+
+/* ============================ 账单行 ============================ */
+.expense-row {
+  @include flex-between;
+  background: #fff;
+  margin: 0 24rpx 8rpx;
+  border-radius: $radius-md;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.02);
+
+  &:active { background: #FAFAFA; }
+}
+
+.expense-icon-wrap {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.expense-icon-emoji { font-size: 40rpx; }
+
+.expense-content {
+  flex: 1;
+  margin-left: 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+  overflow: hidden;
+}
+
+.expense-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: $text-primary;
+  @include text-ellipsis;
+}
+
+.expense-meta {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.expense-payer {
+  font-size: 22rpx;
+  color: $text-hint;
+}
+
+.expense-split {
+  font-size: 22rpx;
+  color: $text-hint;
+}
+
+.expense-amount {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: $text-primary;
+  flex-shrink: 0;
+  margin-left: 16rpx;
+}

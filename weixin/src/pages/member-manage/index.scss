@@ -1,0 +1,188 @@
+@import '../../styles/variables.scss';
+
+.member-page {
+  min-height: 100vh;
+  background: $bg-page;
+}
+
+.member-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  font-size: 28rpx;
+  color: $text-hint;
+}
+
+/* 头部 */
+.member-header {
+  @include flex-between;
+  padding: 24rpx 32rpx;
+  background: #fff;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04);
+}
+
+.member-header-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: $text-primary;
+}
+
+.member-header-count {
+  font-size: 26rpx;
+  color: $text-hint;
+  background: #F5F5F5;
+  border-radius: 20rpx;
+  padding: 4rpx 16rpx;
+}
+
+/* 添加 */
+.member-add-section {
+  margin: 24rpx;
+  background: #fff;
+  border-radius: $radius-lg;
+  padding: 28rpx 32rpx;
+  box-shadow: $shadow-card;
+}
+
+.add-row {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.add-input {
+  flex: 1;
+  background: #F8F9FA;
+  border-radius: $radius-sm;
+  padding: 18rpx 24rpx;
+  font-size: 28rpx;
+}
+
+.add-btn {
+  background: $primary;
+  border-radius: $radius-sm;
+  padding: 18rpx 36rpx;
+  @include flex-center;
+
+  &:active { opacity: 0.85; }
+}
+
+.add-btn-text {
+  font-size: 26rpx;
+  color: #fff;
+  font-weight: 600;
+}
+
+.invite-btn {
+  background: #EFF6FF;
+  border-radius: $radius-sm;
+  padding: 20rpx;
+  text-align: center;
+
+  &:active { background: #DBEAFE; }
+}
+
+.invite-btn-text {
+  font-size: 26rpx;
+  color: #3B82F6;
+  font-weight: 500;
+}
+
+/* 成员列表 */
+.member-list-section {
+  margin: 0 24rpx;
+  background: #fff;
+  border-radius: $radius-lg;
+  padding: 28rpx 32rpx;
+  box-shadow: $shadow-card;
+}
+
+.section-label {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: $text-primary;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.member-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.member-item {
+  @include flex-between;
+}
+
+.member-avatar-lg {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  Text {
+    font-size: 32rpx;
+    font-weight: 700;
+  }
+}
+
+.member-info {
+  flex: 1;
+  margin-left: 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.member-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.member-tags {
+  display: flex;
+  gap: 10rpx;
+}
+
+.member-tag {
+  font-size: 20rpx;
+  padding: 4rpx 14rpx;
+  border-radius: 8rpx;
+
+  &.shadow { background: #FEF3C7; color: #92400E; }
+  &.claimed { background: $primary-light; color: $primary-dark; }
+  &.owner { background: #EFF6FF; color: #3B82F6; }
+}
+
+.member-remove-btn {
+  font-size: 24rpx;
+  color: #EF4444;
+  padding: 10rpx 20rpx;
+
+  &:active { opacity: 0.7; }
+}
+
+/* 说明 */
+.member-note {
+  margin: 24rpx;
+  background: #FFFBEB;
+  border-radius: $radius-md;
+  padding: 24rpx 28rpx;
+  display: flex;
+  gap: 12rpx;
+}
+
+.note-icon { font-size: 28rpx; flex-shrink: 0; }
+
+.note-text {
+  font-size: 24rpx;
+  color: #92400E;
+  line-height: 1.7;
+  flex: 1;
+}

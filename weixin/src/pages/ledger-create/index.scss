@@ -1,0 +1,258 @@
+@import '../../styles/variables.scss';
+
+.ledger-create-page {
+  min-height: 100vh;
+  background: $bg-page;
+  padding: 24rpx;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 140rpx);
+}
+
+/* ============================ 表单区块 ============================ */
+.form-section {
+  background: #fff;
+  border-radius: $radius-lg;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: $shadow-card;
+}
+
+.section-label {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: $text-primary;
+  margin-bottom: 24rpx;
+  display: block;
+}
+
+.form-group {
+  margin-bottom: 28rpx;
+
+  &:last-child { margin-bottom: 0; }
+}
+
+.form-label {
+  font-size: 26rpx;
+  color: $text-secondary;
+  font-weight: 500;
+  margin-bottom: 12rpx;
+  display: block;
+}
+
+.form-input {
+  background: #F8F9FA;
+  border-radius: $radius-sm;
+  padding: 20rpx 24rpx;
+  font-size: 28rpx;
+  color: $text-primary;
+}
+
+.form-row {
+  display: flex;
+  gap: 20rpx;
+}
+
+.flex1 { flex: 1; }
+
+.form-picker {
+  @include flex-between;
+  background: #F8F9FA;
+  border-radius: $radius-sm;
+  padding: 20rpx 24rpx;
+
+  Text:first-child {
+    font-size: 28rpx;
+    color: $text-primary;
+
+    &.placeholder { color: #ccc; }
+  }
+}
+
+.picker-arrow {
+  font-size: 28rpx;
+  color: #ccc;
+  margin-left: 12rpx;
+}
+
+/* 预算输入 */
+.budget-input-wrap {
+  @include flex-center;
+  background: #F8F9FA;
+  border-radius: $radius-sm;
+  padding: 0 24rpx;
+  gap: 8rpx;
+}
+
+.budget-symbol {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.budget-input {
+  flex: 1;
+  height: 80rpx;
+  font-size: 28rpx;
+  color: $text-primary;
+}
+
+/* ============================ 皮肤选择 ============================ */
+.skin-grid {
+  display: flex;
+  gap: 20rpx;
+  flex-wrap: wrap;
+  margin-bottom: 24rpx;
+}
+
+.skin-option {
+  width: calc(33.33% - 14rpx);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10rpx;
+  padding: 20rpx 0;
+  border-radius: $radius-md;
+  border: 2rpx solid transparent;
+  position: relative;
+  transition: all 0.2s;
+
+  &:active { transform: scale(0.96); }
+
+  &.selected {
+    background: #F8F9FA;
+    border-color: $primary;
+  }
+}
+
+.skin-circle {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.1);
+}
+
+.skin-name {
+  font-size: 24rpx;
+  color: $text-secondary;
+}
+
+.skin-check {
+  position: absolute;
+  top: 8rpx;
+  right: 12rpx;
+  font-size: 24rpx;
+  color: $primary;
+  font-weight: 700;
+}
+
+.skin-preview {
+  border-radius: $radius-sm;
+  padding: 24rpx;
+  text-align: center;
+}
+
+.skin-preview-text {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* ============================ 成员管理 ============================ */
+.member-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+}
+
+.member-chip {
+  @include flex-center;
+  gap: 10rpx;
+  background: #F8F9FA;
+  border-radius: 32rpx;
+  padding: 10rpx 20rpx 10rpx 10rpx;
+}
+
+.member-avatar-sm {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-text {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.member-chip-name {
+  font-size: 26rpx;
+  color: $text-primary;
+  font-weight: 500;
+}
+
+.member-remove {
+  font-size: 24rpx;
+  color: #ccc;
+  padding: 4rpx;
+  margin-left: 4rpx;
+
+  &:active { color: #EF4444; }
+}
+
+/* 添加成员行 */
+.add-member-row {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.add-member-input {
+  flex: 1;
+  background: #F8F9FA;
+  border-radius: $radius-sm;
+  padding: 16rpx 24rpx;
+  font-size: 28rpx;
+}
+
+.add-member-btn {
+  background: $primary;
+  border-radius: $radius-sm;
+  padding: 16rpx 32rpx;
+  @include flex-center;
+
+  &:active { opacity: 0.85; }
+}
+
+.add-btn-text {
+  font-size: 26rpx;
+  color: #fff;
+  font-weight: 600;
+}
+
+.form-hint {
+  font-size: 22rpx;
+  color: $text-hint;
+  line-height: 1.6;
+}
+
+/* ============================ 提交按钮 ============================ */
+.submit-area {
+  padding: 16rpx 0;
+}
+
+.submit-btn {
+  border-radius: 48rpx;
+  padding: 28rpx;
+  text-align: center;
+
+  &:active { opacity: 0.85; transform: scale(0.98); }
+}
+
+.submit-text {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #fff;
+}

@@ -1,3 +1,226 @@
-.ledger {
-  padding: 20px;
+@import '../../styles/variables.scss';
+
+.ledger-page {
+  min-height: 100vh;
+  background: $bg-page;
+}
+
+/* ============================ 顶部导航 ============================ */
+.page-nav {
+  @include flex-between;
+  padding: 24rpx 32rpx 16rpx;
+  background: #fff;
+}
+
+.nav-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: $text-primary;
+}
+
+.nav-action {
+  background: $primary;
+  border-radius: 28rpx;
+  padding: 10rpx 28rpx;
+
+  &:active { opacity: 0.85; }
+}
+
+.nav-action-text {
+  font-size: 24rpx;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ============================ Tab 切换 ============================ */
+.tab-bar {
+  display: flex;
+  background: #fff;
+  padding: 0 32rpx;
+  position: relative;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 20rpx 0;
+  font-size: 28rpx;
+  color: $text-hint;
+  font-weight: 500;
+  transition: color 0.2s;
+
+  &.active {
+    color: $primary;
+    font-weight: 600;
+  }
+
+  &:active { opacity: 0.7; }
+}
+
+.tab-indicator {
+  position: absolute;
+  bottom: 0;
+  width: 50%;
+  height: 4rpx;
+  background: $primary;
+  border-radius: 2rpx;
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================ 账本列表 ============================ */
+.ledger-list {
+  padding: 24rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.list-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 0;
+  gap: 20rpx;
+}
+
+.empty-icon { font-size: 80rpx; }
+
+.empty-text {
+  font-size: 28rpx;
+  color: $text-hint;
+}
+
+/* ============================ 账本卡片 ============================ */
+.ledger-card {
+  background: #fff;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  box-shadow: $shadow-card;
+  transition: transform 0.2s;
+
+  &:active { transform: scale(0.985); }
+
+  &.current {
+    border: 2rpx solid $primary;
+  }
+}
+
+.card-accent {
+  height: 8rpx;
+  width: 100%;
+}
+
+.card-body {
+  padding: 28rpx;
+}
+
+.card-top {
+  @include flex-between;
+  margin-bottom: 24rpx;
+}
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+  flex: 1;
+}
+
+.card-name {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: $text-primary;
+}
+
+.card-tags {
+  display: flex;
+  gap: 12rpx;
+  flex-wrap: wrap;
+}
+
+.card-tag {
+  font-size: 22rpx;
+  color: $text-hint;
+  background: #F5F5F5;
+  border-radius: 8rpx;
+  padding: 4rpx 14rpx;
+}
+
+.skin-dot {
+  width: 24rpx;
+  height: 24rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* 统计 */
+.card-stats {
+  display: flex;
+  gap: 0;
+  margin-bottom: 24rpx;
+  background: #FAFAFA;
+  border-radius: $radius-md;
+  padding: 20rpx 0;
+}
+
+.stat-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6rpx;
+  border-right: 1rpx solid #EEEEEE;
+
+  &:last-child { border-right: none; }
+}
+
+.stat-value {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: $text-primary;
+}
+
+.stat-label {
+  font-size: 22rpx;
+  color: $text-hint;
+}
+
+/* 操作 */
+.card-actions {
+  display: flex;
+  gap: 16rpx;
+  justify-content: flex-end;
+}
+
+.action-tag {
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  font-weight: 500;
+
+  &.current-tag {
+    background: $primary-light;
+    color: $primary-dark;
+  }
+}
+
+.action-btn {
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  background: #F5F5F5;
+  color: $text-secondary;
+
+  &:active { opacity: 0.7; }
+
+  &.primary {
+    background: $primary-light;
+    color: $primary-dark;
+  }
+
+  &.danger {
+    background: #FEF2F2;
+    color: #EF4444;
+  }
 }

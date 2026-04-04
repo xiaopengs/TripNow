@@ -1,0 +1,71 @@
+/**
+ * 全局共享样式变量和 Mixin
+ * 所有页面通用
+ */
+
+// 主题色
+$primary: #10B981;
+$primary-light: #D1FAE5;
+$primary-dark: #047857;
+
+// 文字色
+$text-primary: #1a1a2e;
+$text-secondary: #555;
+$text-hint: #999;
+
+// 背景色
+$bg-page: #f5f6f8;
+$bg-card: #ffffff;
+
+// 间距
+$spacing-xs: 8rpx;
+$spacing-sm: 16rpx;
+$spacing-md: 24rpx;
+$spacing-lg: 32rpx;
+$spacing-xl: 48rpx;
+
+// 圆角
+$radius-sm: 12rpx;
+$radius-md: 20rpx;
+$radius-lg: 32rpx;
+$radius-round: 50%;
+
+// 阴影
+$shadow-card: 0 4rpx 24rpx rgba(0, 0, 0, 0.06);
+$shadow-elevated: 0 8rpx 40rpx rgba(0, 0, 0, 0.1);
+
+// 通用 Mixin
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin card-base {
+  background: $bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+// 皮肤背景渐变 mixin
+@mixin skin-gradient($color) {
+  background: linear-gradient(135deg, $color 0%, darken($color, 15%) 100%);
+}

@@ -1,169 +1,93 @@
-import { View, Text, Input, Picker } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { useState } from 'react'
 import './index.scss'
 
-const CATEGORIES = [
-  { value: 'food', label: '餐饮', icon: '🍔' },
-  { value: 'transport', label: '交通', icon: '🚗' },
-  { value: 'accommodation', label: '住宿', icon: '🏨' },
-  { value: 'entertainment', label: '娱乐', icon: '🎮' },
-  { value: 'shopping', label: '购物', icon: '🛍️' },
-  { value: 'tickets', label: '门票', icon: '🎫' }
-]
-
-const MEMBERS = ['我', '小明', '小红', '小李']
-
 export default function Expense() {
-  const [formData, setFormData] = useState({
-    title: '',
-    amount: '',
-    category: 0,
-    payer: 0,
-    splitMethod: 'equal',
-    selectedMembers: [true, true, true, true]
-  })
-
-  const handleSubmit = () => {
-    if (!formData.title || !formData.amount) {
-      Taro.showToast({
-        title: '请填写完整信息',
-        icon: 'none'
-      })
-      return
-    }
-
-    // 保存到本地
-    const expense = {
-      id: Date.now().toString(),
-      title: formData.title,
-      amount: parseFloat(formData.amount),
-      category: CATEGORIES[formData.category].value,
-      payer: MEMBERS[formData.payer],
-      splitMethod: formData.splitMethod,
-      selectedMembers: formData.selectedMembers,
-      timestamp: new Date().toISOString()
-    }
-
-    // TODO: 保存到全局状态或本地存储
-    console.log('保存账单:', expense)
-
-    Taro.showToast({
-      title: '保存成功',
-      icon: 'success'
-    })
-
-    // 重置表单
-    setFormData({
-      title: '',
-      amount: '',
-      category: 0,
-      payer: 0,
-      splitMethod: 'equal',
-      selectedMembers: [true, true, true, true]
-    })
+  // 手动记账
+  const handleManualAdd = () => {
+    Taro.navigateTo({ url: '/pages/expense-form/index' })
   }
 
-  const handleAmountChange = (value) => {
-    setFormData({ ...formData, amount: value })
+  // AI 拍照识别
+  const handleAICamera = () => {
+    Taro.navigateTo({ url: '/pages/ai-camera/index' })
   }
 
-  const handleTitleChange = (value) => {
-    setFormData({ ...formData, title: value })
-  }
-
-  const handleCategoryChange = (e) => {
-    setFormData({ ...formData, category: e.detail.value })
-  }
-
-  const handlePayerChange = (e) => {
-    setFormData({ ...formData, payer: e.detail.value })
-  }
-
-  const toggleMember = (index) => {
-    const newSelectedMembers = [...formData.selectedMembers]
-    newSelectedMembers[index] = !newSelectedMembers[index]
-    setFormData({ ...formData, selectedMembers: newSelectedMembers })
+  // 语音记账
+  const handleVoiceAdd = () => {
+    Taro.navigateTo({ url: '/pages/voice/index' })
   }
 
   return (
-    <View className='expense'>
-      {/* 金额输入 */}
-      <View className='amount-section'>
-        <Text className='currency'>¥</Text>
-        <Input
-          className='amount-input'
-          type='digit'
-          placeholder='0.00'
-          value={formData.amount}
-          onInput={(e) => handleAmountChange(e.detail.value)}
-        />
+    <View className='smart-add-page'>
+      {/* 顶部标题 */}
+      <View className='page-header'>
+        <Text className='page-title'>智能记账</Text>
+        <Text className='page-subtitle'>选择一种方式记录你的支出</Text>
       </View>
 
-      {/* 表单 */}
-      <View className='form'>
-        {/* 标题 */}
-        <View className='form-item'>
-          <Text className='label'>标题</Text>
-          <Input
-            className='input'
-            placeholder='请输入标题'
-            value={formData.title}
-            onInput={(e) => handleTitleChange(e.detail.value)}
-          />
+      {/* 三大入口卡片 */}
+      <View className='entry-grid'>
+        {/* 手动记账 */}
+        <View className='entry-card' onClick={handleManualAdd}>
+          <View className='entry-icon-wrap icon-orange'>
+            <Text className='entry-icon'>✏</Text>
+          </View>
+          <Text className='entry-name'>手动记账</Text>
+          <Text className='entry-desc'>输入金额和详情</Text>
         </View>
 
-        {/* 类目 */}
-        <View className='form-item'>
-          <Text className='label'>类目</Text>
-          <Picker
-            mode='selector'
-            range={CATEGORIES}
-            rangeKey='label'
-            value={formData.category}
-            onChange={handleCategoryChange}
-          >
-            <View className='picker'>
-              <Text>{CATEGORIES[formData.category].icon} {CATEGORIES[formData.category].label}</Text>
+        {/* AI 拍照识别 */}
+        <View className='entry-card' onClick={handleAICamera}>
+          <View className='entry-icon-wrap icon-blue'>
+            <Text className='entry-icon'>📷</Text>
+          </View>
+          <Text className='entry-name'>AI 识别</Text>
+          <Text className='entry-desc'>拍照自动识别小票</Text>
+        </View>
+
+        {/* 语音记账 */}
+        <View className='entry-card' onClick={handleVoiceAdd}>
+          <View className='entry-icon-wrap icon-green'>
+            <Text className='entry-icon'>🎤</Text>
+          </View>
+          <Text className='entry-name'>语音记账</Text>
+          <Text className='entry-desc'>说话快速记录</Text>
+        </View>
+      </View>
+
+      {/* 快捷操作区 */}
+      <View className='quick-actions'>
+        <Text className='section-label'>快捷操作</Text>
+        
+        <View className='action-list'>
+          <View className='action-item' onClick={() => Taro.showToast({ title: '开发中', icon: 'none' })}>
+            <Text className='action-icon'>📋</Text>
+            <View className='action-info'>
+              <Text className='action-name'>最近模板</Text>
+              <Text className='action-hint'>使用上次记账模板</Text>
             </View>
-          </Picker>
-        </View>
+            <Text className='action-arrow'>›</Text>
+          </View>
 
-        {/* 支付人 */}
-        <View className='form-item'>
-          <Text className='label'>支付人</Text>
-          <Picker
-            mode='selector'
-            range={MEMBERS}
-            value={formData.payer}
-            onChange={handlePayerChange}
-          >
-            <View className='picker'>
-              <Text>{MEMBERS[formData.payer]}</Text>
+          <View className='action-item' onClick={() => Taro.showToast({ title: '开发中', icon: 'none' })}>
+            <Text className='action-icon'>🔄</Text>
+            <View className='action-info'>
+              <Text className='action-name'>复制上一笔</Text>
+              <Text className='action-hint'>快速复用上次记录</Text>
             </View>
-          </Picker>
-        </View>
+            <Text className='action-arrow'>›</Text>
+          </View>
 
-        {/* 分摊成员 */}
-        <View className='form-item'>
-          <Text className='label'>参与分摊</Text>
-          <View className='member-grid'>
-            {MEMBERS.map((member, index) => (
-              <View
-                key={index}
-                className={`member-chip ${formData.selectedMembers[index] ? 'active' : ''}`}
-                onClick={() => toggleMember(index)}
-              >
-                <Text>{member}</Text>
-              </View>
-            ))}
+          <View className='action-item' onClick={() => Taro.showToast({ title: '开发中', icon: 'none' })}>
+            <Text className='action-icon'>💰</Text>
+            <View className='action-info'>
+              <Text className='action-name'>公款钱包支付</Text>
+              <Text className='action-hint'>从公款钱包扣款</Text>
+            </View>
+            <Text className='action-arrow'>›</Text>
           </View>
         </View>
-      </View>
-
-      {/* 提交按钮 */}
-      <View className='submit-btn' onClick={handleSubmit}>
-        <Text className='submit-text'>保存</Text>
       </View>
     </View>
   )
