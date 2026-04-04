@@ -1,0 +1,12 @@
+# 微信小程序构建产物
+dist/
+
+# 私钥文件
+private.*.key
+*.key
+
+# 依赖
+node_modules/
+
+# 微信开发者工具配置
+.vscode/

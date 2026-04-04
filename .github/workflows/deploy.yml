@@ -1,0 +1,68 @@
+name: Deploy Mini Program
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      type:
+        description: '发布类型'
+        required: true
+        default: 'preview'
+        type: choice
+        options:
+          - preview
+          - upload
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'weixin/node_modules'
+
+      - name: Install dependencies
+        run: |
+          cd weixin
+          npm ci
+
+      - name: Build
+        run: |
+          cd weixin
+          npm run build:weapp
+
+      - name: Upload Mini Program
+        if: github.event.inputs.type != 'preview'
+        env:
+          MINIPROGRAM_APPID: ${{ secrets.MINIPROGRAM_APPID }}
+          MINIPROGRAM_PRIVATE_KEY: ${{ secrets.MINIPROGRAM_PRIVATE_KEY }}
+        run: |
+          cd weixin
+          echo "$MINIPROGRAM_PRIVATE_KEY" > private.${{ secrets.MINIPROGRAM_APPID }}.key
+          npm run upload -- --type upload
+
+      - name: Preview Mini Program
+        if: github.event.inputs.type == 'preview' || github.event_name == 'push'
+        env:
+          MINIPROGRAM_APPID: ${{ secrets.MINIPROGRAM_APPID }}
+          MINIPROGRAM_PRIVATE_KEY: ${{ secrets.MINIPROGRAM_PRIVATE_KEY }}
+        run: |
+          cd weixin
+          echo "$MINIPROGRAM_PRIVATE_KEY" > private.${{ secrets.MINIPROGRAM_APPID }}.key
+          npm run upload -- --type preview
+
+      - name: Summary
+        run: |
+          echo "## 🎉 部署完成" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**提交信息:** ${{ github.event.head_commit.message }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "请登录 [微信公众平台](https://mp.weixin.qq.com/) 发布体验版或提交审核。" >> $GITHUB_STEP_SUMMARY

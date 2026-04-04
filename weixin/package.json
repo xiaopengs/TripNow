@@ -1,7 +1,7 @@
 {
-  "name": "miniprogram",
+  "name": "tripnow",
   "version": "1.0.0",
-  "description": "",
+  "description": "TripNow 记账小程序",
   "main": "index.js",
   "scripts": {
     "build:weapp": "taro build --type weapp",
@@ -15,7 +15,10 @@
     "dev:swan": "npm run build:swan -- --watch",
     "dev:tt": "npm run build:tt -- --watch",
     "dev:h5": "npm run build:h5 -- --watch",
-    "dev:rn": "npm run build:rn -- --watch"
+    "dev:rn": "npm run build:rn -- --watch",
+    "upload": "node scripts/upload.js",
+    "upload:preview": "node scripts/upload.js --type preview",
+    "upload:upload": "node scripts/upload.js --type upload"
   },
   "keywords": [],
   "author": "",
@@ -49,6 +52,8 @@
     "sass": "^1.98.0",
     "typescript": "^6.0.2",
     "webpack": "^5.105.4",
-    "webpack-cli": "^7.0.2"
+    "webpack-cli": "^7.0.2",
+    "miniprogram-ci": "^3.15.0",
+    "commander": "^12.0.0"
   }
 }
